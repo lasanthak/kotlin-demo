@@ -1,2 +1,2 @@
 # kotlin-demo
-Kotlin demo project
+Kotlin project to test out language constructs
