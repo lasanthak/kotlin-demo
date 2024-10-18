@@ -1,24 +1,18 @@
 package org.lasantha.kotlindemo.operators
 
+class PrePostOperators(private var value: Long) {
 
-fun main(args: Array<String>) {
-    val ppo = PrePostOperators(100)
-    println("$ppo")
-    println("Pre inc > ${ppo.preInc()}, $ppo")
-    println("$ppo")
-    println("Post inc > ${ppo.postInc()}, $ppo")
-    println("$ppo")
-    println("Done")
-}
+    fun getValue(): Long {
+        return value
+    }
 
-class PrePostOperators(private var a: Long) {
     fun preInc(): Long {
-        return ++a
+        return ++value
     }
 
     fun postInc(): Long {
-        return a++
+        return value++
     }
 
-    override fun toString(): String = "a = $a"
+    override fun toString(): String = "${this::class}(value=$value)"
 }

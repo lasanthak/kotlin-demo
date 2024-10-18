@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm") version "2.0.21"
     application
 }
 
@@ -11,6 +11,10 @@ repositories {
 }
 
 dependencies {
+    //JUnit Jupiter
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.3")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
     testImplementation(kotlin("test"))
 }
 
@@ -19,7 +23,7 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(21)
 }
 
 application {

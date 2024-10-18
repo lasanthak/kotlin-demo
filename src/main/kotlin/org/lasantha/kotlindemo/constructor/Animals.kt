@@ -1,4 +1,4 @@
-package org.lasantha.kotlindemo.classes.model
+package org.lasantha.kotlindemo.constructor
 
 interface Animal
 
