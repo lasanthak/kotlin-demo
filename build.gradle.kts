@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     //JUnit Jupiter
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     testImplementation(kotlin("test"))

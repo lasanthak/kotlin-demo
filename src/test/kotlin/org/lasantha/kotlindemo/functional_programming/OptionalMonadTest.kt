@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 
-class MonadTest {
+class OptionalMonadTest {
 
     @Test
     fun `Identity Test`() {
@@ -97,7 +97,7 @@ class MonadTest {
             Optional.of(string).flatMap(f).flatMap(g)
         )
         assertEquals(
-            Optional.None,
+            Optional.None, //TODO - How do we get Optional.of("We did not find anyone.") ?
             Optional.of(null).flatMap(f).flatMap(g)
         )
     }
