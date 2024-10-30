@@ -3,14 +3,9 @@ package org.lasantha.kotlindemo.functional_programming
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-data class Triplet<A>(val a: A, val b: A, val c: A) : Functor<A> {
-    override fun <B> map(f: (A) -> B): Triplet<B> {
-        return Triplet(f(a), f(b), f(c))
-    }
-}
+
 
 class FunctorTest {
-
     @Test
     fun `Identity Test`() {
         // Functors must preserve identity morphisms
