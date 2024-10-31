@@ -22,6 +22,6 @@ package org.lasantha.kotlindemo.functional_programming
  *     }
  * }
  */
-interface Functor<A> {
+interface Functor<out A> {
     fun <B> map(f: (A) -> B): Functor<B>
 }
