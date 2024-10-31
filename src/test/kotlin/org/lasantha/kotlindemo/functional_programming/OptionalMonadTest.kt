@@ -31,7 +31,7 @@ class OptionalMonadTest {
     }
 
     @Test
-    fun `Composition Test`() {
+    fun `Map Composition Test`() {
         data class MyData(val name: String, val age: Int)
 
         val regex = """[^.]* name is (\w+)[^.]* (\d+) years old[^.]*\.""".toRegex()
@@ -85,7 +85,7 @@ class OptionalMonadTest {
 
         val g: (MyData?) -> Optional<String> = {
             when (it) {
-                null -> Optional.of("We did not find anyone.")
+                null -> Optional.of("Not found.")
                 else -> Optional.of("We found ${it.name} who is ${it.age} years old.")
             }
         }
@@ -97,7 +97,7 @@ class OptionalMonadTest {
             Optional.of(string).flatMap(f).flatMap(g)
         )
         assertEquals(
-            Optional.None, //TODO - How do we get Optional.of("We did not find anyone.") ?
+            Optional.None,  // We do not get Optional.of("Not found.") because of short-circuiting in None.flatMap
             Optional.of(null).flatMap(f).flatMap(g)
         )
     }

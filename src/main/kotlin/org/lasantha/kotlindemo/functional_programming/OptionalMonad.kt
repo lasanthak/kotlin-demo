@@ -20,6 +20,9 @@ sealed interface Optional<out A> : Monad<A> {
         override fun <B> flatMap(f: (A) -> Monad<B>) = f(value)
     }
 
+    /**
+     * None object will short-circuit the map and flatMap operations in a pipeline.
+     */
     data object None : Optional<Nothing> {
 
         override fun <B> map(f: (Nothing) -> B) = None
