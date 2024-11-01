@@ -59,4 +59,19 @@ class ProducerFunctorTest {
             assertEquals("Failed to produce a random number", actual.explanation.message)
         }
     }
+
+    @Test
+    fun `Unit Test`() {
+        val producer = RandomNumberProducer(100)
+        
+        val result = producer.produce()
+        val actualResult = result.map { it }
+        assertEquals(result, actualResult)
+
+        val failure = producer.produce()
+        val actualFailure = failure.map { it }
+        assertEquals(failure, actualFailure)
+
+        assertNotEquals(result, failure)
+    }
 }

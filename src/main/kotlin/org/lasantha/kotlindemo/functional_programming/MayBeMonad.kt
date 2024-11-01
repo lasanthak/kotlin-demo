@@ -2,6 +2,10 @@ package org.lasantha.kotlindemo.functional_programming
 
 /**
  * Implementation of the MayBe monad (from Haskell).
+ *   Just.map() -> Just
+ *   Just.flatMap() -> Just or None
+ *   None.map() -> None
+ *   None.flatMap() -> None
  */
 sealed interface MayBe<out A> {
     fun <B> map(f: (A) -> B): MayBe<B>

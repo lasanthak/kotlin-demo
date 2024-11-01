@@ -8,29 +8,22 @@ package org.lasantha.kotlindemo.functional_programming
  *   Result.map() -> Result
  *   Failure.map() -> Failure
  */
-sealed interface Producible<out R, out F> : Functor<R> {
+sealed interface Producible<out R, out F> {
 
     val success: Boolean
-
-    override fun <B> map(f: (R) -> B): Producible<B, F>
+    fun <B> map(f: (R) -> B): Producible<B, F>
 
     data class Result<out A>(val value: A) : Producible<A, Nothing> {
-
         override val success = true
-
         override fun <B> map(f: (A) -> B) = Result(f(value))
-
     }
 
     /**
      * Failure object will short-circuit the map operations in a pipeline.
      */
     data class Failure<out F>(val explanation: F) : Producible<Nothing, F> {
-
         override val success = false
-
         override fun <B> map(f: (Nothing) -> B) = this
-
     }
 }
 
