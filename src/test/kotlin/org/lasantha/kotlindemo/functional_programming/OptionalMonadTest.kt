@@ -1,7 +1,6 @@
 package org.lasantha.kotlindemo.functional_programming
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 
@@ -102,4 +101,19 @@ class OptionalMonadTest {
         )
     }
 
+    @Test
+    fun `Unit Test`() {
+        assertEquals(Optional.of("Hello World!"), Optional.of("Hello World!"))
+        assertEquals(Optional.Some("Hello World!"), Optional.of("Hello World!"))
+        assertEquals(Optional.of(null), Optional.of(null))
+        assertEquals(Optional.None, Optional.of(null))
+        assertNotEquals(Optional.of(2), Optional.of(1))
+        assertNotEquals(Optional.Some(2), Optional.of(1))
+        assertNotEquals(Optional.None, Optional.of(1))
+
+        assertEquals("Hello", Optional.of("Hello").getOrNull())
+        assertEquals("Hello", Optional.Some("Hello").getOrNull())
+        assertNull(Optional.of(null).getOrNull())
+        assertNull(Optional.None.getOrNull())
+    }
 }

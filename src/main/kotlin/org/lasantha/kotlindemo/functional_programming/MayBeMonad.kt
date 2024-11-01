@@ -1,27 +1,27 @@
 package org.lasantha.kotlindemo.functional_programming
 
-sealed interface MayBe<out A> : Monad<A> {
+/**
+ * Implementation of the MayBe monad (from Haskell).
+ */
+sealed interface MayBe<out A> {
+    fun <B> map(f: (A) -> B): MayBe<B>
+    fun <B> flatMap(f: (A) -> MayBe<B>): MayBe<B>
+    val isJust: Boolean
 
-    override fun <B> map(f: (A) -> B): MayBe<B>
-
-    override fun <B> flatMap(f: (A) -> Monad<B>): MayBe<B>
+    fun getOrNull() = when (this) {
+        is Just -> value
+        is None -> null
+    }
 
     data class Just<out A>(val value: A) : MayBe<A> {
-
         override fun <B> map(f: (A) -> B) = Just(f(value))
-
-        override fun <B> flatMap(f: (A) -> Monad<B>) = when (val result = f(value)) {
-            is Just -> result
-            is None -> None
-            else -> throw IllegalStateException("MayBe can only contain Just or None")
-        }
+        override fun <B> flatMap(f: (A) -> MayBe<B>) = f(value)
+        override val isJust = true
     }
 
     data object None : MayBe<Nothing> {
-
         override fun <B> map(f: (Nothing) -> B) = None
-
-        override fun <B> flatMap(f: (Nothing) -> Monad<B>) = None
-
+        override fun <B> flatMap(f: (Nothing) -> MayBe<B>) = None
+        override val isJust = false
     }
 }

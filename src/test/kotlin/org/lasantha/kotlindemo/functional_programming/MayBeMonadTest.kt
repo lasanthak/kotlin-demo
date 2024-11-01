@@ -1,7 +1,7 @@
 package org.lasantha.kotlindemo.functional_programming
 
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 class MayBeMonadTest {
 
@@ -9,18 +9,17 @@ class MayBeMonadTest {
 
     @Test
     fun `Composition test`() {
-        val maybe: (Int) -> MayBe<Int> = { i ->
+        val intIMayLike: (Int) -> MayBe<Int> = { i ->
             MayBe.Just(i)
                 .flatMap { if (it >= 0) MayBe.Just(it) else MayBe.None }
                 .flatMap { if (it <= 100) MayBe.Just(it) else MayBe.None }
-
         }
 
-        assertEquals(MayBe.Just(50), maybe(50))
-        assertEquals(MayBe.Just(100), maybe(100))
-        assertEquals(MayBe.Just(0), maybe(0))
-        assertEquals(MayBe.None, maybe(-1))
-        assertEquals(MayBe.None, maybe(101))
+        assertEquals(MayBe.Just(50), intIMayLike(50))
+        assertEquals(MayBe.Just(100), intIMayLike(100))
+        assertEquals(MayBe.Just(0), intIMayLike(0))
+        assertEquals(MayBe.None, intIMayLike(-1))
+        assertEquals(MayBe.None, intIMayLike(101))
     }
 
     @Test
@@ -30,5 +29,29 @@ class MayBeMonadTest {
         assertEquals(MayBe.Just(0), 0.maybeEven())
         assertEquals(MayBe.None, (-1).maybeEven())
         assertEquals(MayBe.None, 101.maybeEven())
+
+        when (val result = 50.maybeEven()) {
+            is MayBe.Just -> result.value
+            is MayBe.None -> throw IllegalStateException("Unexpected None")
+        }
+    }
+
+    @Test
+    fun `Test getOrNull`() {
+        val f: (String) -> MayBe<String> = { s ->
+            MayBe.Just(s).flatMap { if (it.contains(' ')) MayBe.None else MayBe.Just(it) }
+        }
+
+        assertTrue(f("Hello").isJust)
+        assertEquals("Hello", f("Hello").getOrNull())
+        assertFalse(f("Hello World").isJust)
+        assertNull(f("Hello World").getOrNull())
+    }
+    @Test
+    fun `Unit test`() {
+
+        assertEquals(MayBe.Just(1), MayBe.Just(1))
+        assertEquals(MayBe.None, MayBe.None)
+        assertNotEquals(MayBe.None, MayBe.Just(1))
     }
 }
