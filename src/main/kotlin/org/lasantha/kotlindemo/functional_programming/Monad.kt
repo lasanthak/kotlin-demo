@@ -13,14 +13,6 @@ package org.lasantha.kotlindemo.functional_programming
  * 1. Functors must preserve identity morphisms
  * 2. Functors must preserve composition of morphisms
  *
- * Example:
- * A simple class to demonstrate the functor laws.
- *
- * data class Triplet<A>(val a: A, val b: A, val c: A) : Functor<A> {
- *     override fun <B> map(f: (A) -> B): Triplet<B> {
- *         return Triplet(f(a), f(b), f(c))
- *     }
- * }
  */
 interface Functor<out A> {
     fun <B> map(f: (A) -> B): Functor<B>
@@ -40,5 +32,6 @@ interface Functor<out A> {
  */
 interface Monad<out A> : Functor<A> {
     override fun <B> map(f: (A) -> B): Monad<B>
+
     fun <B> flatMap(f: (A) -> Monad<B>): Monad<B>
 }

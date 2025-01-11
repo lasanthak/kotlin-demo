@@ -59,7 +59,9 @@ class MayBeMonadTest {
         }
 
         assertTrue(f("Hello").isJust)
+        assertEquals("Hello", (f("Hello") as MayBe.Just<String>).value)
         assertEquals("Hello", f("Hello").getOrNull())
+
         assertFalse(f("Hello World").isJust)
         assertNull(f("Hello World").getOrNull())
     }
