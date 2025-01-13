@@ -10,7 +10,7 @@ data class Version(
     val patch: Int,
     val preRelease: String? = null,
     val buildMetadata: String? = null
-) {
+) : Comparable<Version> {
     val preReleaseIdentifiers: List<Identifier<Any>>
     val buildMetadataIdentifiers: List<AlphaNumericIdentifier>
 
@@ -34,20 +34,59 @@ data class Version(
         }
     }
 
+    companion object {
+        fun parse(versionString: String) = VersionUtil.parse(versionString)
+    }
+
     override fun toString(): String = when {
         preRelease == null && buildMetadata == null -> "$major.$minor.$patch"
         else -> "$major.$minor.$patch${preRelease?.let { "-$it" } ?: ""}${buildMetadata?.let { "+$it" } ?: ""}"
     }
 
-    // Todo - Implement the comparison operators
+    override fun compareTo(other: Version): Int {
+        if (major != other.major) return major.compareTo(other.major)
+        if (minor != other.minor) return minor.compareTo(other.minor)
+        if (patch != other.patch) return patch.compareTo(other.patch)
 
-    companion object {
-        fun parse(versionString: String) = VersionUtil.parse(versionString)
+        val size = preReleaseIdentifiers.size
+        val otherSize = other.preReleaseIdentifiers.size
+        if (size == 0 && otherSize == 0) return 0
+        else if (size == 0) return 1
+        else if (otherSize == 0) return -1
+        else {
+            for (i in 0..<minOf(size, otherSize)) {
+                val cmp = preReleaseIdentifiers[i].compareTo(other.preReleaseIdentifiers[i])
+                if (cmp != 0) return cmp
+            }
+            return size.compareTo(otherSize)
+        }
+        // build metadata is ignored when comparing versions
     }
+
+    fun nextMajor(preRelease: String? = null, buildMetadata: String? = null) =
+        Version(major + 1, 0, 0, preRelease, buildMetadata)
+
+    fun nextMinor(preRelease: String? = null, buildMetadata: String? = null) =
+        Version(major, minor + 1, 0, preRelease, buildMetadata)
+
+    fun nextPatch(preRelease: String? = null, buildMetadata: String? = null) =
+        Version(major, minor, patch + 1, preRelease, buildMetadata)
 }
 
-sealed interface Identifier<out T> {
+sealed interface Identifier<out T> : Comparable<Identifier<Any>> {
     val value: T
+
+    override fun compareTo(other: Identifier<Any>): Int = when (this) {
+        is NumericIdentifier -> when (other) {
+            is NumericIdentifier -> value.compareTo(other.value)
+            is AlphaNumericIdentifier -> -1
+        }
+
+        is AlphaNumericIdentifier -> when (other) {
+            is NumericIdentifier -> 1
+            is AlphaNumericIdentifier -> value.compareTo(other.value)
+        }
+    }
 }
 
 /**
