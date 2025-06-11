@@ -6,6 +6,18 @@ import org.lasantha.kotlindemo.semver.Version.Companion.parse
 
 class VersionTest {
 
+
+    @Test
+    fun testOutput() {
+        //val version = Version(1, 12, 35)
+        val version = Version.Companion.parse("1.0.0-alpha.1.3+021.AF2.6D3----117B344092BD") ?: throw IllegalArgumentException()
+        println(version.major)
+        println(version.minor)
+        println(version.patch)
+        println(version.preReleaseIdentifiers)
+        println(version.buildMetadataIdentifiers)
+    }
+
     @Test
     fun testCreateValidation_Valid() {
         Version(7, 12, 345)
